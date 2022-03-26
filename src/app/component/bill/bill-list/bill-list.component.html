@@ -1,0 +1,204 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý bán hàng
+  </h4>
+</div>
+<div class="row py-3 px-4">
+  <div class="col-4 px-0">
+    <form action="">
+      <input
+        type="text"
+        class="form-control search"
+        placeholder="Tìm kiếm theo người bán hàng"
+        tabindex="1"
+        [(ngModel)]="keySearch"
+        name="key"
+        appAutofocus
+        (keyup)="onSearch($event)"
+      />
+    </form>
+  </div>
+  <div class="col-8 d-flex justify-content-end">
+    <button class="btn btn-success btn-sm" routerLink="add">Thêm mới</button>
+  </div>
+</div>
+<div class="row px-4" id="main-container">
+  <table class="table table-success">
+    <thead id="table-head">
+      <tr>
+        <th class="col-3 py-2">Người bán hàng</th>
+        <th class="col-4 text-left px-0 py-2">Ngày bán hàng</th>
+        <th class="col-3 text-right py-2">Tổng tiền (VNĐ)</th>
+        <th [style]="{ 'padding-left': '20px' }" class="text-center py-2">
+          Hành động
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of bills">
+        <td
+          class="fontWeigth item-center"
+          data-toggle="tooltip"
+          data-placement="right"
+          routerLink="detail/{{ item.id }}"
+        >
+          <span class="link-detail">{{ item.user.fullName }}</span>
+        </td>
+        <td class="fontWeigth text-left item-center">
+          {{ item.createdDate | date: "dd-MM-yyyy" }}
+        </td>
+        <td class="fontWeigth text-right item-center">
+          {{ item.total | currency: "VND" }}
+        </td>
+        <td class="d-flex justify-content-end align-items-center py-1">
+          <a
+            class="btn btn-primary btn-sm mx-2 btn-action"
+            data-toggle="tooltip"
+            data-placement="right"
+            title="Xem chi tiết"
+            (click)="openModalDetail(item)"
+            ><i class="fas fa-eye"></i>
+          </a>
+          <a
+            class="btn btn-primary btn-sm mx-2 btn-action-edit"
+            data-toggle="tooltip"
+            data-placement="right"
+            (click)="openModalEdit(item)"
+            title="Chỉnh sửa"
+            ><i class="fa fa-pencil"></i>
+          </a>
+          <a
+            class="btn btn-danger btn-sm tooltips btn-action"
+            data-placement="top"
+            data-original-title="Xóa"
+            (click)="openModalDeleted(item)"
+            ><i class="fa fa-times px-1"></i
+          ></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!--Delete modal-->
+  <div
+    class="modal fade"
+    id="deleteProductModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deleteModelLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Xóa</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            xóa hóa đơn bán hàng có thể ảnh hưởng đến việc thống kê bạn có muốn
+            xóa không ?
+          </p>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Không
+            </button>
+            <button
+              class="btn btn-danger"
+              data-dismiss="modal"
+              (click)="deleteBill(billDelete?.id)"
+            >
+              Có
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End delete modal-->
+  <!--Load page modal-->
+  <div
+    class="modal fade"
+    id="loadPage"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deleteModelLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Tải lại trang</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Hóa đơn đã bị xóa bạn có muốn tải lại trang không ?</p>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Không
+            </button>
+            <button
+              class="btn btn-danger"
+              data-dismiss="modal"
+              (click)="
+                this.getAllBill(this.currentPage - 1, this.pageSize.value)
+              "
+            >
+              Có
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End load page modal-->
+</div>
+<div class="row d-flex justify-content-between mx-1 mb-2">
+  <div class="col-3">
+    <span class="text-center my-1 mx-1">Hiển thị</span>
+    <nz-select
+      class="mx-3 col-4"
+      (ngModelChange)="changePageSize($event)"
+      [(ngModel)]="pageSize"
+    >
+      <nz-option
+        *ngFor="let size of listPageSize"
+        [nzValue]="size"
+        [nzLabel]="size.label"
+      ></nz-option>
+    </nz-select>
+  </div>
+  <nz-pagination
+    [(nzPageIndex)]="currentPage"
+    [nzPageSize]="pageSize.value"
+    [nzTotal]="totalBill"
+    [nzResponsive]="true"
+    (nzPageIndexChange)="changePage()"
+    nzShowQuickJumper
+    [nzShowTotal]="rangeTemplate"
+  ></nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{ range[0] }}-{{ range[1] }} của {{ totalBill }} phiếu nhập
+  </ng-template>
+</div>

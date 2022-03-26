@@ -1,0 +1,248 @@
+<div class="row px-4">
+  <h4 class="px-4 py-3 border-bottom border-secondary col-12">
+    Quản lý sản phẩm
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addProductCategoryModalLabel">
+        Chỉnh sửa sản phẩm
+      </h5>
+    </div>
+    <div class="modal-body">
+      <form
+        [formGroup]="formEditProduct"
+        (ngSubmit)="editProduct(formEditProduct)"
+        appAutofocus
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <input type="hidden" formControlName="id" />
+        </div>
+        <div class="form-inline">
+          <div class="form-group col-6 px-0">
+            <p for="name" class="my-0 col-10 my-1 px-0">
+              Tên sản phẩm<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 my-0 search"
+              formControlName="name"
+              placeholder="Nhập tên sản phẩm"
+              tabindex="1"
+              appAutofocus
+              [ngClass]="{
+                'form-focus':
+                  (productError?.name && submited) ||
+                  (f.name.errors?.required && f.name.dirty) ||
+                  (f.name.errors?.minlength && f.name.touched) ||
+                  (f.name.errors?.maxlength && f.name.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+            <!--Validator back-end-->
+            <div *ngIf="productError?.name && submited">
+              <span class="text text-danger">{{ productError?.name }}</span>
+            </div>
+            <!--End validator back-end-->
+            <!--Validator front-end-->
+            <div *ngIf="f.name.errors?.required && f.name.dirty">
+              <span class="text text-danger">
+                {{ f.name.errors?.required }}
+              </span>
+            </div>
+            <div *ngIf="f.name.errors?.maxlength && f.name.dirty">
+              <span class="text text-danger">
+                {{ f.name.errors?.minlength }}
+              </span>
+            </div>
+            <div *ngIf="f.name.errors?.maxlength && f.name.dirty">
+              <span class="text text-danger">
+                {{ f.name.errors?.maxlength }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="my-0">
+              Ảnh sản phẩm<span class="text text-danger">*</span>
+            </p>
+            <div class="form-inline col-12 px-0 my-2">
+              <input
+                type="file"
+                tabindex="2"
+                class="from-control-file col-8 file px-0"
+                #imageRef
+                (change)="selectFile($event)"
+                [ngClass]="{
+                  'form-focus':
+                    (productError?.imageUrl && submited) ||
+                    (f.imageUrl.errors?.required && f.imageUrl.dirty)
+                }"
+                [ngClass]="{ 'form-control:focus': false }"
+              />
+              <input
+                type="hidden"
+                readonly
+                class="form-control imageUrl col-2"
+                formControlName="imageUrl"
+                placeholder="Nhập ảnh sản phẩm"
+                tabindex="-1"
+                [ngClass]="{
+                  'form-focus':
+                    (productError?.imageUrl && submited) ||
+                    (f.imageUrl.errors?.required && f.imageUrl.dirty)
+                }"
+                [ngClass]="{ 'form-control:focus': false }"
+              />
+            </div>
+            <!--Validator backend-->
+            <div *ngIf="productError?.imageUrl && submited">
+              <span class="text text-danger">{{ productError?.imageUrl }}</span>
+            </div>
+            <!--End Validator backend-->
+            <!--Validator front-end-->
+            <div *ngIf="f.imageUrl.errors?.required && f.imageUrl.dirty">
+              <span class="text text-danger">
+                {{ f.imageUrl.errors?.required }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+        </div>
+        <div class="form-inline mt-3">
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-1 mx-0">
+              Loại sản phẩm<span class="text text-danger">*</span>
+            </p>
+            <select
+              tabindex="3"
+              class="form-control col-10 search"
+              formControlName="productCategoryId"
+              [ngClass]="{
+                'form-focus':
+                  f.productCategoryId.errors?.min && f.productCategoryId.dirty
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            >
+              <option [ngValue]="0" selected>-- Chọn loại sản phẩm --</option>
+              <option *ngFor="let pc of productCategories" [ngValue]="pc?.id">
+                {{ pc.name }}
+              </option>
+            </select>
+            <!--Validator backend-->
+            <div *ngIf="">
+              <span class="text text-danger"></span>
+            </div>
+            <!--End Validator backend-->
+            <!--Validator front-end-->
+            <div
+              *ngIf="
+                f.productCategoryId.errors?.min && f.productCategoryId.dirty
+              "
+            >
+              <span class="text text-danger">
+                * loại sản phẩm không được để trống
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="col-6 px-0">
+            <div class="row mx-0">
+              <p for="price" class="my-1 col-10 px-0">
+                Giá bán ra<span class="text text-danger">*</span>
+              </p>
+              <input
+                type="number"
+                class="form-control col-12 my-0 search"
+                formControlName="price"
+                placeholder="Nhập giá bán"
+                tabindex="4"
+                [ngClass]="{
+                  'form-focus':
+                    (productError?.price && submited) ||
+                    (f.price.errors?.min && f.price.dirty) ||
+                    (f.price.errors?.max && f.price.dirty)
+                }"
+                [ngClass]="{ 'form-control:focus': false }"
+              />
+              <!--Validator backend-->
+              <div *ngIf="productError?.price && submited">
+                <span class="text text-danger">{{ productError?.price }}</span>
+              </div>
+              <!--End Validator backend-->
+              <!--Validator front-end-->
+              <div *ngIf="f.price.errors?.min && f.price.dirty">
+                <span class="text text-danger">
+                  {{ f.price.errors?.min }}
+                </span>
+              </div>
+              <div *ngIf="f.price.errors?.max && f.price.dirty">
+                <span class="text text-danger">
+                  {{ f.price.errors?.max }}
+                </span>
+              </div>
+              <!--End validator front-end-->
+            </div>
+          </div>
+        </div>
+        <div class="form-group mt-3">
+          <p for="description" class="col-10 px-0 my-0">
+            Thông tin sản phẩm<span class="text text-danger">*</span>
+          </p>
+          <textarea
+            class="form-control search"
+            formControlName="description"
+            id=""
+            cols="30"
+            rows="5"
+            placeholder="Nhập thông tin sản phẩm"
+            tabindex="5"
+            [ngClass]="{
+              'form-focus':
+                (productError?.description && submited) ||
+                (f.description.errors?.required && f.description.dirty)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          ></textarea>
+          <!--Validator backend-->
+          <div *ngIf="productError?.description && submited">
+            <span class="text text-danger">{{
+              productError?.description
+            }}</span>
+          </div>
+        </div>
+        <!--End Validator backend-->
+        <!--Validator front-end-->
+        <div *ngIf="f.description.errors?.required && f.description.dirty">
+          <span class="text text-danger">
+            {{ f.description.errors?.required }}
+          </span>
+        </div>
+        <!--End validator front-end-->
+        <!-- </div> -->
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            type="button"
+            id="add-employee-form"
+            class="btn btn-secondary btn-sm"
+            data-dismiss="modal"
+            tabindex="7"
+            (click)="redirectList()"
+          >
+            Quay trở về
+          </button>
+          <button
+            type="submit"
+            [disabled]="formEditProduct.invalid"
+            class="btn btn-primary btn-sm"
+            tabindex="6"
+          >
+            Chỉnh sửa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

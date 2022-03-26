@@ -1,0 +1,16 @@
+<div class="login-page" [class]="{ 'login-hidden': isLogged }">
+  <div class="form">
+    <form class="login-form" [formGroup]="formLogin" (ngSubmit)="login()">
+      <input type="text" placeholder="username" formControlName="username" />
+      <input
+        type="password"
+        placeholder="password"
+        formControlName="password"
+      />
+      <span *ngIf="isLogger" class="text-danger"
+        >Tài khoản hoặc mật khẩu không chính xác</span
+      >
+      <button>login</button>
+    </form>
+  </div>
+</div>

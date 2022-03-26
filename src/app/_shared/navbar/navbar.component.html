@@ -1,0 +1,83 @@
+<div class="sider-bar col-2 px-0">
+  <div class="mb-5">
+    <h4 class="px-4 py-3 text-light border-bottom border-light">Shop IP</h4>
+  </div>
+  <ul class="sider-bar-menu px-4">
+    <li class="list-unstyled py-3" *ngIf="isLogged && role">
+      <a
+        href=""
+        class="text-decoration-none link"
+        [ngClass]="{ 'link-click': linkClickUser }"
+        routerLink="user-manager"
+        (click)="changeColorUser()"
+        tabindex="-1"
+      >
+        Quản lý nhân viên</a
+      >
+    </li>
+    <li class="list-unstyled py-3" *ngIf="isLogged">
+      <a
+        tabindex="-1"
+        routerLink="bill-manager"
+        class="text-decoration-none link"
+        [ngClass]="{ 'link-click': linkClickBill }"
+        (click)="changeColorBill()"
+        >Quản lý đơn hàng
+      </a>
+    </li>
+    <li class="list-unstyled py-3" *ngIf="isLogged && role">
+      <a
+        tabindex="-1"
+        routerLink="product-category-manager"
+        class="text-decoration-none link"
+        [ngClass]="{ 'link-click': linkClick }"
+        (click)="changeColorPC()"
+        >Quản lý loại sản phẩm
+      </a>
+    </li>
+    <li class="list-unstyled py-3" *ngIf="isLogged && role">
+      <a
+        tabindex="-1"
+        routerLink="product-category-manager"
+        class="text-decoration-none link"
+        routerLink="supplier-manager"
+        [ngClass]="{ 'link-click': linkClickSupplier }"
+        (click)="changeColorSupplier()"
+        >Quản lý nhà cung cấp
+      </a>
+    </li>
+    <li class="list-unstyled py-3" *ngIf="isLogged">
+      <a
+        tabindex="-1"
+        href=""
+        class="text-decoration-none link"
+        routerLink="product-manager"
+        [ngClass]="{ 'link-click': linkClickProduct }"
+        (click)="changColorProduct()"
+        >Quản lý sản phẩm
+      </a>
+    </li>
+    <li class="list-unstyled py-3" *ngIf="isLogged && role">
+      <a
+        tabindex="-1"
+        href=""
+        class="text-decoration-none link"
+        routerLink="import-bill-manager"
+        [ngClass]="{ 'link-click': linkClickImportBill }"
+        (click)="changeColorImportBill()"
+        >Nhập hàng
+      </a>
+    </li>
+    <li class="list-unstyled py-3" *ngIf="isLogged && role">
+      <a
+        tabindex="-1"
+        href=""
+        class="text-decoration-none link"
+        routerLink="inventory-manager"
+        [ngClass]="{ 'link-click': linkClickInventory }"
+        (click)="changeColorInventory()"
+        >Tồn kho
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,213 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý nhà cung cấp
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="addProductCategoryModalLabel">
+        Thêm mới nhà cung cấp
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form
+        [formGroup]="formAddSupplier"
+        appAutofocus
+        (ngSubmit)="addSupplier(formAddSupplier)"
+      >
+        <div class="form-group">
+          <p for="name" class="col-10 px-0 my-0">
+            Tên công ty<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            formControlName="supplierName"
+            placeholder="Nhập tên công ty"
+            tabindex="1"
+            appAutofocus
+            [ngClass]="{
+              'form-focus':
+                (supplierError?.supplierName && submited) ||
+                (f.supplierName.errors?.required && f.supplierName.dirty) ||
+                (f.supplierName.errors?.minlength && f.supplierName.touched) ||
+                (f.supplierName.errors?.maxlength && f.supplierName.touched)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          />
+          <!--Validator back-end-->
+          <div *ngIf="supplierError?.supplierName && submited">
+            <span class="text text-danger">{{
+              supplierError?.supplierName
+            }}</span>
+          </div>
+          <!--End validator back-end-->
+          <!--Validator front-end-->
+          <div
+            *ngIf="
+              f.supplierName.errors?.required &&
+              f.supplierName.dirty &&
+              !supplierError?.supplierName
+            "
+          >
+            <span class="text text-danger">
+              {{ f.supplierName.errors?.required }}
+            </span>
+          </div>
+          <div
+            *ngIf="f.supplierName.errors?.minlength && f.supplierName.touched"
+          >
+            <span class="text text-danger">
+              {{ f.supplierName.errors?.minlength }}
+            </span>
+          </div>
+          <div
+            *ngIf="f.supplierName.errors?.maxlength && f.supplierName.touched"
+          >
+            <span class="text text-danger">
+              {{ f.supplierName.errors?.maxlength }}
+            </span>
+          </div>
+          <!--End validator front-end-->
+        </div>
+        <div class="form-group">
+          <p for="description" class="col-10 px-0 my-0">
+            Email<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="email"
+            class="form-control search"
+            formControlName="email"
+            placeholder="Nhập email nhà cung cấp"
+            tabindex="2"
+            [ngClass]="{
+              'form-focus':
+                (supplierError?.email && submited) ||
+                (f.email.errors?.required && f.email.dirty) ||
+                (f.email.errors?.email && f.email.touched)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          />
+          <!--Validator backend-->
+          <div *ngIf="supplierError?.email && submited">
+            <span class="text text-danger">{{ supplierError?.email }}</span>
+          </div>
+          <!--End Validator backend-->
+          <!--Validator front-end-->
+          <div
+            *ngIf="
+              f.email.errors?.required && f.email.dirty && !supplierError?.email
+            "
+          >
+            <span class="text text-danger">
+              {{ f.email.errors?.required }}
+            </span>
+          </div>
+          <div *ngIf="f.email.errors?.email && f.email.touched">
+            <span class="text text-danger">
+              {{ f.email.errors?.email }}
+            </span>
+          </div>
+          <!--End validator front-end-->
+        </div>
+        <div class="form-group">
+          <p for="description" class="col-10 px-0 my-0">
+            Địa chỉ<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            formControlName="address"
+            placeholder="Nhập địa chỉ nhà cung cấp"
+            tabindex="3"
+            [ngClass]="{
+              'form-focus':
+                (supplierError?.address && submited) ||
+                (f.address.errors?.required && f.address.dirty)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          />
+          <!--Validator backend-->
+          <div *ngIf="supplierError?.address && submited">
+            <span class="text text-danger">{{ supplierError?.address }}</span>
+          </div>
+          <!--End Validator backend-->
+          <!--Validator front-end-->
+          <div
+            *ngIf="
+              f.address.errors?.required &&
+              f.address.dirty &&
+              !supplierError?.address
+            "
+          >
+            <span class="text text-danger">
+              {{ f.address.errors?.required }}
+            </span>
+          </div>
+          <!--End validator front-end-->
+        </div>
+        <div class="form-group">
+          <p for="description" class="col-10 px-0 my-0">
+            Số điện thoại<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            formControlName="phoneNumber"
+            placeholder="Nhập số điện thoại nhà cung cấp"
+            tabindex="4"
+            [ngClass]="{
+              'form-focus':
+                (supplierError?.phoneNumber && submited) ||
+                (f.phoneNumber.errors?.required && f.phoneNumber.dirty) ||
+                (f.phoneNumber.errors?.phoneNumber && f.phoneNumber.dirty)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          />
+          <!--Validator backend-->
+          <div *ngIf="supplierError?.phoneNumber && submited">
+            <span class="text text-danger">{{
+              supplierError?.phoneNumber
+            }}</span>
+          </div>
+          <!--End Validator backend-->
+          <!--Validator front-end-->
+          <div
+            *ngIf="
+              f.phoneNumber.errors?.required &&
+              f.phoneNumber.dirty &&
+              !supplierError?.phoneNumber
+            "
+          >
+            <span class="text text-danger">
+              {{ f.phoneNumber.errors?.required }}
+            </span>
+          </div>
+          <div *ngIf="f.phoneNumber.errors?.phoneNumber && f.phoneNumber.dirty">
+            <span class="text text-danger">
+              {{ f.phoneNumber.errors?.phoneNumber }}
+            </span>
+          </div>
+
+          <!--End validator front-end-->
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            type="button"
+            id="add-employee-form"
+            class="btn btn-secondary btn-sm"
+            data-dismiss="modal"
+            tabindex="6"
+            (click)="redirectList()"
+          >
+            Quay trở về
+          </button>
+          <button type="submit" class="btn btn-primary btn-sm" tabindex="5">
+            Thêm mới
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

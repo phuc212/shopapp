@@ -1,0 +1,15 @@
+<div class="container-fluid px-3">
+  <div class="row" id="main-container px-3" tabindex="-1">
+    <div *ngIf="isLogged" class="col-2 bg-nav">
+      <app-navbar></app-navbar>
+    </div>
+    <div class="col-10 px-0">
+      <div *ngIf="isLogged" class="menu">
+        <app-menu></app-menu>
+      </div>
+      <div class="col-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

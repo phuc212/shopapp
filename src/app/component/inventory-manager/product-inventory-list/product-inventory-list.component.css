@@ -1,0 +1,27 @@
+.style-icon {
+  font-size: 50px;
+}
+
+.style-icon-orange {
+  color: orange;
+}
+
+.style-icon-primary {
+  color: rgb(0, 132, 255);
+}
+
+.quantity {
+  font-size: 20px;
+}
+
+table td {
+  padding: 0.55rem;
+}
+
+.btn {
+  padding: 0.25rem 0.5rem;
+}
+
+.border-bottom-head-table {
+  border-bottom: 3px solid palevioletred !important;
+}

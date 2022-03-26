@@ -1,0 +1,142 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý loại sản phẩm
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="addProductCategoryModalLabel">
+        Xem thông tin loại sản phẩm
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="form-group">
+          <input type="hidden" class="form-control" formControlName="id" />
+        </div>
+        <div class="form-group">
+          <p for="name" class="col-10 px-0 my-0">
+            Tên loại sản phẩm<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            formControlName="name"
+            placeholder="Nhập tên loại sản phẩm"
+            tabindex="1"
+            autofocus="autofocus"
+            readonly
+          />
+        </div>
+        <div class="form-group">
+          <p for="description" class="col-10 px-0 my-0">
+            Thông tin loại sản phẩm<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            id="description"
+            name="description"
+            formControlName="description"
+            #description
+            placeholder="Nhập thông tin loại sản phẩm"
+            tabindex="2"
+            required
+            readonly
+          />
+        </div>
+      </form>
+      <table class="table table-success mt-5">
+        <thead id="table-head">
+          <tr>
+            <th class="col-1-ten py-2">Tên sản phẩm</th>
+            <th class="col-2 py-2">Ảnh sản phẩm</th>
+            <th class="text-right py-2">Số lượng</th>
+            <th class="py-2">Loại sản phẩm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td
+              [style]="{ height: '80px', 'line-height': '80px' }"
+              class="fontWeigth col-1-ten"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="{{ product?.name }}"
+            >
+              {{ product?.name }}
+            </td>
+            <td class="fontWeigth col-2">
+              <img
+                [style]="{
+                  width: '50%',
+                  height: '80px',
+                  'line-height': '80px'
+                }"
+                src="{{
+                  'http://localhost:8080/api/products/image-product/' +
+                    product?.id
+                }}"
+                alt=""
+              />
+            </td>
+            <td
+              [style]="{ height: '80px', 'line-height': '80px' }"
+              class="fontWeigth text-right"
+            >
+              {{ product?.quantity }}
+            </td>
+            <td
+              [style]="{ height: '80px', 'line-height': '80px' }"
+              class="fontWeigth"
+            >
+              {{ product?.productCategory?.name }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row d-flex justify-content-between mx-1 mb-4">
+        <div class="col-3">
+          <span class="text-center my-1">Hiển thị</span>
+          <nz-select
+            class="mx-3 col-4"
+            (ngModelChange)="changePageSize($event)"
+            [(ngModel)]="pageSize"
+          >
+            <nz-option
+              *ngFor="let size of listPageSize"
+              [nzValue]="size"
+              [nzLabel]="size.label"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <nz-pagination
+          [(nzPageIndex)]="currentPage"
+          [nzPageSize]="pageSize.value"
+          [nzTotal]="totalProducts"
+          [nzResponsive]="true"
+          (nzPageIndexChange)="changePage()"
+          [nzShowTotal]="rangeTemplate"
+          nzShowQuickJumper
+        >
+        </nz-pagination>
+        <ng-template #rangeTemplate let-range="range" let-total>
+          {{ range[0] }}-{{ range[1] }} của {{ totalProducts }} sản phẩm
+        </ng-template>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button
+          type="button"
+          id="add-employee-form"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          tabindex="4"
+          (click)="redirectList()"
+        >
+          Quay trở về
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

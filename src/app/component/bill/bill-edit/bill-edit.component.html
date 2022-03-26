@@ -1,0 +1,187 @@
+<div class="row px-4">
+  <h4 class="px-4 py-3 border-bottom border-secondary col-12">
+    Quản lý bán hàng
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addProductCategoryModalLabel">
+        Chỉnh sửa hóa đơn bán hàng
+      </h5>
+    </div>
+    <div class="row mt-5 px-2">
+      <div class="col-8">
+        <div class="mt-4">
+          <table class="table table-success">
+            <thead style="background-color: #3498db; color: #ecf0f1">
+              <tr>
+                <th class="col-4">Tên sản phẩm</th>
+                <th class="col-2 text-right">Số lượng</th>
+                <th class="col-3 text-right">Giá bán</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of billDetails">
+                <input type="hidden" value="{{ item.id }}" />
+                <td class="fontWeigth col-1-ten">
+                  <span
+                    ><input
+                      type="text"
+                      value="{{ item.product.name }}"
+                      class="form-control"
+                      readonly
+                    />
+                  </span>
+                </td>
+                <td class="fontWeigth">
+                  <input
+                    type="number"
+                    class="form-control text-right"
+                    [ngModel]="item.quantity"
+                    appAutofocus
+                    (ngModelChange)="
+                      handelChangeQuantity(
+                        item.id,
+                        (item.quantity = $event),
+                        item.product.name
+                      )
+                    "
+                  />
+                  <span
+                    [style]="{ display: 'none' }"
+                    id="quantity{{ item.id }}"
+                    class="text text-danger"
+                  >
+                    * số lượng phải từ 1 đến 1000000000
+                  </span>
+                </td>
+                <td class="fontWeigth text-right">
+                  <input
+                    type="number"
+                    class="form-control text-right"
+                    [ngModel]="item.price"
+                    (ngModelChange)="
+                      handelChangePrice(item.id, (item.price = $event))
+                    "
+                  />
+                  <span
+                    [style]="{ display: 'none' }"
+                    id="price{{ item.id }}"
+                    class="text text-danger"
+                  >
+                    * giá nhập vào phải từ 1 đến 1000000000
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-4">
+        <form [formGroup]="formBill" (ngSubmit)="addImportBill()">
+          <div class="form-group">
+            <p class="my-0">
+              Người nhập hàng <span class="text text-danger">*</span>
+            </p>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Chọn người nhập hàng"
+              formControlName="userId"
+              [ngClass]="{
+                'form-focus': billError?.userId && submited
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            >
+              <nz-option
+                *ngFor="let user of users"
+                [nzLabel]="user.fullName"
+                [nzValue]="user.id"
+              ></nz-option>
+            </nz-select>
+            <!--Validator backend-->
+            <div *ngIf="billError?.userId && submited">
+              <span class="text text-danger">{{ billError?.userId }}</span>
+            </div>
+            <!--End validator backend-->
+            <!--Validator frontend-->
+            <div *ngIf="fB.userId.errors?.required && fB.userId.dirty">
+              <span class="text text-danger">
+                * người bán hàng không được để trống
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="form-group">
+            <p class="my-0">
+              Ngày nhập vào <span class="text text-danger">*</span>
+            </p>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="createdDate"
+              [ngClass]="{
+                'form-focus':
+                  (billError?.createdDate && submited) ||
+                  (fB.createdDate?.errors?.dateVaidator &&
+                    fB.createdDate.dirty) ||
+                  (fB.createdDate.errors?.dateMin && fB.createdDate.dirty) ||
+                  (fB.createdDate.errors?.dateFormat && fB.createdDate.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+            <!--Validator backend-->
+            <div *ngIf="billError?.createdDate && submited">
+              <span class="text text-danger">{{ billError?.createdDate }}</span>
+            </div>
+            <!--End validator backend-->
+            <!--Validator frontend-->
+            <div
+              *ngIf="
+                fB.createdDate.errors?.dateVaidator && fB.createdDate.dirty
+              "
+            >
+              <span class="text text-danger">
+                * Ngày bán hàng không được lớn hơn ngày hiện tại
+              </span>
+            </div>
+            <div *ngIf="fB.createdDate.errors?.dateMin && fB.createdDate.dirty">
+              <span class="text text-danger">
+                * Ngày bán hàng không được nhỏ hơn năm 1980
+              </span>
+            </div>
+            <div
+              *ngIf="fB.createdDate.errors?.dateFormat && fB.createdDate.dirty"
+            >
+              <span class="text text-danger">
+                * Ngày bán hàng không đúng định dạng
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button
+              type="button"
+              id="add-employee-form"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              tabindex="7"
+              (click)="redirectList()"
+            >
+              Quay trở về
+            </button>
+            <button
+              type="submit"
+              id="submitForm"
+              class="btn btn-primary"
+              tabindex="6"
+            >
+              Chỉnh sửa
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

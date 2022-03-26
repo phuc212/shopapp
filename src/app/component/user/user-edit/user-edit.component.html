@@ -1,0 +1,291 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý nhân viên
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addProductCategoryModalLabel">
+        Chỉnh sửa thông tin nhân viên
+      </h5>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formEditUser" (ngSubmit)="editUser()" appAutofocus>
+        <input type="hidden" formControlName="id" />
+        <input type="hidden" formControlName="password" />
+        <div class="form-inline">
+          <div class="form-group col-6 px-0">
+            <p for="name" class="col-10 px-0 my-0">
+              Tên nhân viên<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 search"
+              formControlName="fullName"
+              tabindex="1"
+              appAutofocus
+              placeholder="Nhập vào tên nhân viên"
+              [ngClass]="{
+                'form-focus':
+                  (userError?.fullName && submited) ||
+                  (f.fullName.errors?.required && f.fullName.dirty) ||
+                  (f.fullName.errors?.minlength && f.fullName.dirty) ||
+                  (f.fullName.errors?.maxlength && f.fullName.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Giới tính<span class="text text-danger">*</span>
+            </p>
+            <select
+              class="form-control col-12 search"
+              formControlName="gender"
+              [ngClass]="{
+                'form-focus':
+                  (userError?.gender && submited) ||
+                  (f.gender.errors?.required && f.gender.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            >
+              <option [ngValue]="''">-- Chọn giới tính --</option>
+              <option [ngValue]="'Male'">Male</option>
+              <option [ngValue]="'Female'">Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-inline">
+          <div class="col-6 px-0">
+            <!--Validator back-end-->
+            <div *ngIf="userError?.fullName && submited">
+              <span class="text text-danger">{{ userError?.fullName }}</span>
+            </div>
+            <!--End validator back-end-->
+            <!--Validator front-end-->
+            <div *ngIf="f.fullName.errors?.required && f.fullName.dirty">
+              <span class="text text-danger">
+                {{ f.fullName.errors?.required }}
+              </span>
+            </div>
+            <div *ngIf="f.fullName.errors?.minlength && f.fullName.dirty">
+              <span class="text text-danger">
+                {{ f.fullName.errors?.minlength }}
+              </span>
+            </div>
+            <div *ngIf="f.fullName.errors?.maxlength && f.fullName.dirty">
+              <span class="text text-danger">
+                {{ f.fullName.errors?.maxlength }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="col-6 px-0">
+            <!--Validator back-end-->
+            <div *ngIf="userError?.gender && submited">
+              <span class="text text-danger">{{ userError?.gender }}</span>
+            </div>
+            <!--End validator back-end-->
+            <!--Validator front-end-->
+            <div *ngIf="f.gender.errors?.required && f.gender.dirty">
+              <span class="text text-danger">
+                {{ f.gender.errors?.required }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+        </div>
+        <div class="form-inline paddingTop">
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Địa chỉ<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 search"
+              formControlName="address"
+              placeholder="Nhập địa chỉ nhân viên"
+              tabindex="2"
+              [ngClass]="{
+                'form-focus':
+                  (userError?.address && submited) ||
+                  (f.address.errors?.required && f.address.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Ngày sinh<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="date"
+              class="form-control col-12 search"
+              formControlName="dayOfBirth"
+              tabindex="2"
+              [ngClass]="{
+                'form-focus':
+                  (userError?.dayOfBirth && submited) ||
+                  (f.dayOfBirth?.errors?.dateVaidator && f.dayOfBirth.dirty) ||
+                  (f.dayOfBirth.errors?.dateMin && f.dayOfBirth.dirty) ||
+                  (f.dayOfBirth.errors?.dateFormat && f.dayOfBirth.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+          </div>
+        </div>
+        <div class="form-inline">
+          <div class="col-6 px-0">
+            <!--Validator back-end-->
+            <div *ngIf="userError?.address && submited">
+              <span class="text text-danger">{{ userError?.address }}</span>
+            </div>
+            <!--End validator back-end-->
+            <!--Validator front-end-->
+            <div *ngIf="f.address.errors?.required && f.address.dirty">
+              <span class="text text-danger">
+                {{ f.address.errors?.required }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="col-6 px-0">
+            <!--Validator back-end-->
+            <div *ngIf="userError?.dayOfBirth && submited">
+              <span class="text text-danger">{{ userError?.dayOfBirth }}</span>
+            </div>
+            <!--End validator back-end-->
+            <div
+              *ngIf="f.dayOfBirth.errors?.dateVaidator && f.dayOfBirth.dirty"
+            >
+              <span class="text text-danger">
+                * Ngày sinh không được lớn hơn ngày hiện tại
+              </span>
+            </div>
+            <div *ngIf="f.dayOfBirth.errors?.dateMin && f.dayOfBirth.dirty">
+              <span class="text text-danger">
+                * Ngày sinh vào không được nhỏ hơn năm 1980
+              </span>
+            </div>
+            <div *ngIf="f.dayOfBirth.errors?.dateFormat && f.dayOfBirth.dirty">
+              <span class="text text-danger">
+                * Ngày sinh không đúng định dạng
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+        </div>
+        <div class="form-inline paddingTop">
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Số điện thoại<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 search"
+              formControlName="phoneNumber"
+              placeholder="Nhập số điện thoại nhân viên"
+              tabindex="2"
+              [ngClass]="{
+                'form-focus':
+                  (userError?.phoneNumber && submited) ||
+                  (f.phoneNumber?.errors?.required && f.phoneNumber.dirty) ||
+                  (f.phoneNumber.errors?.phoneNumber && f.phoneNumber.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Email<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-12 search"
+              formControlName="email"
+              placeholder="Nhập email nhân viên"
+              tabindex="2"
+              [ngClass]="{
+                'form-focus':
+                  (userError?.email && submited) ||
+                  (userError?.email && submited) ||
+                  (f.email.errors?.required && f.email.dirty) ||
+                  (f.email.errors?.email && f.email.touched)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+          </div>
+        </div>
+        <div class="form-inline">
+          <div class="col-6 px-0">
+            <!--Validator back-end-->
+            <div *ngIf="userError?.phoneNumber && submited">
+              <span class="text text-danger">{{ userError?.phoneNumber }}</span>
+            </div>
+            <!--End validator back-end-->
+            <!--Validator front-end-->
+            <div *ngIf="f.phoneNumber.errors?.required && f.phoneNumber.dirty">
+              <span class="text text-danger">
+                {{ f.phoneNumber.errors?.required }}
+              </span>
+            </div>
+            <div
+              *ngIf="f.phoneNumber.errors?.phoneNumber && f.phoneNumber.dirty"
+            >
+              <span class="text text-danger">
+                {{ f.phoneNumber.errors?.phoneNumber }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="col-6 px-0">
+            <!--Validator back-end-->
+            <div *ngIf="userError?.email && submited">
+              <span class="text text-danger">{{ userError?.email }}</span>
+            </div>
+            <!--End validator back-end-->
+            <div *ngIf="f.email.errors?.required && f.email.dirty">
+              <span class="text text-danger">
+                {{ f.email.errors?.required }}
+              </span>
+            </div>
+            <div *ngIf="f.email.errors?.email && f.email.dirty">
+              <span class="text text-danger">
+                {{ f.email.errors?.email }}
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+        </div>
+        <div class="form-inline paddingTop">
+          <div class="col-6 form-group px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Role<span class="text text-danger">*</span>
+            </p>
+            <select class="form-control col-10 search" formControlName="roleId">
+              <option *ngFor="let item of roles" [ngValue]="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer my-2 d-flex justify-content-center">
+          <button
+            type="button"
+            id="add-employee-form"
+            class="btn btn-secondary btn-sm"
+            data-dismiss="modal"
+            tabindex="4"
+            (click)="redirectList()"
+          >
+            Quay trở về
+          </button>
+          <button type="submit" class="btn btn-primary btn-sm" tabindex="5">
+            Chỉnh sửa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

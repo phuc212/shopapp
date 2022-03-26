@@ -1,0 +1,99 @@
+<div class="row px-4">
+  <h4 class="px-4 py-3 border-bottom border-secondary col-12">
+    Quản lý hóa đơn
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addProductCategoryModalLabel">
+        Chi tiết hóa đơn
+      </h5>
+    </div>
+    <div class="row my-2">
+      <form action="" class="col-12">
+        <div class="form-inline">
+          <div class="col-6 form-group">
+            <p class="my-0">
+              Người bán hàng <span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              [value]="bill?.user?.fullName"
+              class="form-control col-10 search"
+              readonly
+            />
+          </div>
+          <div class="col-6 form-group">
+            <p class="my-0">
+              Ngày bán hàng <span class="text text-danger">*</span>
+            </p>
+            <input
+              type="date "
+              class="form-control col-12 search"
+              [value]="bill?.createdDate | date: 'dd-MM-yyyy'"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="form-inline">
+          <div class="col-6 form-group mt-3">
+            <p class="my-0" class="col-10 px-0 my-0">
+              Tổng tiền <span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text "
+              class="form-control col-10 search"
+              [value]="bill?.total | currency: 'VND'"
+              readonly
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row mt-5 px-2 my-0">
+      <div class="col-12">
+        <div>
+          <table class="table table-success">
+            <thead id="table-head">
+              <tr>
+                <th class="col-3 py-2">Tên sản phẩm</th>
+                <th class="col-2 py-2 text-right">Số lượng</th>
+                <th class="col-2 py-2 text-right">Giá bán</th>
+                <th class="col-3 py-2 text-right">Tổng tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of billDetails">
+                <td class="fontWeigth col-1 ten">
+                  {{ item.product.name }}
+                </td>
+                <td class="fontWeigth text-right">
+                  {{ item.quantity }}
+                </td>
+                <td class="fontWeigth text-right">
+                  {{ item.price | currency: "VND" }}
+                </td>
+                <td class="fontWeigth text-right">
+                  {{ item.quantity * item.price | currency: "VND" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer col-12 d-flex justify-content-center">
+        <button
+          type="button"
+          id="add-employee-form"
+          class="btn btn-secondary btn-sm"
+          data-dismiss="modal"
+          tabindex="7"
+          (click)="redirectList()"
+        >
+          Quay trở về
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

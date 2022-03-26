@@ -1,0 +1,146 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý nhân viên
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="addProductCategoryModalLabel">
+        Chi tiết nhân viên
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formDetailUser">
+        <div class="form-group">
+          <input type="hidden" formControlName="id" />
+        </div>
+        <div class="form-inline">
+          <div class="form-group col-6 px-0">
+            <p for="name" class="col-10 px-0 my-0">
+              Tên nhân viên<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 search"
+              formControlName="fullName"
+              tabindex="1"
+              autofocus="autofocus"
+              readonly
+            />
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Giới tính<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-12 search"
+              formControlName="gender"
+              tabindex="2"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="form-inline py-3">
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Địa chỉ<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 search"
+              formControlName="address"
+              placeholder="Nhập địa chỉ nhà cung cấp"
+              tabindex="2"
+              readonly
+            />
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Ngày sinh<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="date"
+              class="form-control col-12 search"
+              formControlName="dayOfBirth"
+              placeholder="Nhập số điện thoại nhà cung cấp"
+              tabindex="2"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="form-inline py-3">
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Số điện thoại<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-10 search"
+              formControlName="phoneNumber"
+              placeholder="Nhập số điện thoại nhà cung cấp"
+              tabindex="2"
+              readonly
+            />
+          </div>
+          <div class="form-group col-6 px-0">
+            <p for="description" class="col-10 px-0 my-0">
+              Email<span class="text text-danger">*</span>
+            </p>
+            <input
+              type="text"
+              class="form-control col-12 search"
+              formControlName="email"
+              placeholder="Nhập số điện thoại nhà cung cấp"
+              tabindex="2"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="form-group col-6 px-0" formGroupName="role">
+          <p for="description" class="col-10 px-0 my-0">
+            Role<span class="text text-danger">*</span>
+          </p>
+          <!-- <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            placeholder="Nhập số điện thoại nhà cung cấp"
+            tabindex="2"
+            readonly
+          /> -->
+          <ng-template #user>
+            <input
+              type="text"
+              class="form-control search col-10"
+              value="User"
+              tabindex="2"
+              readonly
+            />
+          </ng-template>
+          <input
+            type="text"
+            class="form-control search col-10"
+            value="Admin"
+            tabindex="2"
+            readonly
+            *ngIf="roleName?.value == 'ROLE_ADMIN'; else user"
+          />
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            type="button"
+            id="add-employee-form"
+            class="btn btn-secondary btn-sm"
+            data-dismiss="modal"
+            tabindex="4"
+            (click)="redirectList()"
+          >
+            Quay trở về
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

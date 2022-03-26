@@ -1,0 +1,144 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý tồn kho
+  </h4>
+</div>
+<div class="row py-5 px-4 d-flex justify-content-between">
+  <div class="col-5 d-flex align-items-center border border-secondary">
+    <div>
+      <i class="fab fa-product-hunt style-icon style-icon-orange"></i>
+    </div>
+    <div class="mx-5">
+      <p class="style-icon-orange quantity my-0">
+        {{ customResult?.quantity }}
+      </p>
+      <p class="my-0 text-secondary">Số lượng sản phẩm tồn kho</p>
+    </div>
+  </div>
+  <div class="col-5 d-flex align-items-center border border-secondary">
+    <div><i class="fas fa-donate style-icon style-icon-primary"></i></div>
+    <div class="my-3 mx-5">
+      <p class="style-icon-primary quantity my-0">
+        {{ customResult?.total | currency: "VND" }}
+      </p>
+      <p class="my-0 text-secondary">Số vốn tồn kho</p>
+    </div>
+  </div>
+</div>
+<div class="row px-4" id="main-container">
+  <h5 class="border-bottom-head-table border-danger py-2">
+    Số lượng và tổng tiền hàng nhập vào
+  </h5>
+  <table class="table">
+    <thead id="table-head">
+      <tr>
+        <th class="col-4 py-2">Tên sản phẩm</th>
+        <th class="col-3 py-2 text-right">Số lượng</th>
+        <th class="col-5 py-2 text-right">Vốn tiền nhập hàng (VNĐ)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of customResultImportBillAndProduct">
+        <td
+          class="fontWeigth"
+          data-toggle="tooltip"
+          data-placement="right"
+          routerLink="import-bill-detail-list/{{ item.id }}"
+        >
+          <span class="link-detail"> {{ item.name }} </span>
+        </td>
+        <td class="fontWeigth text-right">{{ item.quantity || 0 }}</td>
+        <td class="fontWeigth text-right">
+          {{ item.total || 0 | currency: "VND" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row d-flex justify-content-between mx-1 mb-4">
+  <div class="col-3">
+    <span class="text-center my-1 mx-1">Hiển thị</span>
+    <nz-select
+      class="mx-3 col-4"
+      (ngModelChange)="changePageSize($event)"
+      [(ngModel)]="pageSize"
+    >
+      <nz-option
+        *ngFor="let size of listPageSize"
+        [nzValue]="size"
+        [nzLabel]="size.label"
+      ></nz-option>
+    </nz-select>
+  </div>
+  <nz-pagination
+    [(nzPageIndex)]="currentPage"
+    [nzPageSize]="pageSize.value"
+    [nzTotal]="totalElements"
+    [nzResponsive]="true"
+    (nzPageIndexChange)="changePage()"
+    nzShowQuickJumper
+    [nzShowTotal]="rangeTemplate"
+  ></nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{ range[0] }}-{{ range[1] }} của {{ totalElements }} sản phẩm
+  </ng-template>
+</div>
+
+<div class="row px-4 mt-5" id="main-container">
+  <h5 class="border-bottom-head-table border-danger py-2">
+    Số lượng và tổng tiền hàng bán ra
+  </h5>
+  <table class="table">
+    <thead id="table-head">
+      <tr>
+        <th class="col-4 py-2">Tên sản phẩm</th>
+        <th class="col-3 py-2 text-right">Số lượng</th>
+        <th class="col-5 py-2 text-right">Tổng tiền bán ra (VNĐ)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of customResultBill">
+        <td
+          class="fontWeigth"
+          data-toggle="tooltip"
+          data-placement="right"
+          routerLink="import-bill-detail-list/{{ item.id }}"
+        >
+          <span class="link-detail"> {{ item.name }} </span>
+        </td>
+        <td class="fontWeigth text-right">{{ item.quantity || 0 }}</td>
+        <td class="fontWeigth text-right">
+          {{ item.total || 0 | currency: "VND" }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row d-flex justify-content-between mx-1 mb-4">
+  <div class="col-3">
+    <span class="text-center my-1 mx-1">Hiển thị</span>
+    <nz-select
+      class="mx-3 col-4"
+      (ngModelChange)="changePageSizeBill($event)"
+      [(ngModel)]="pageSizeBill"
+    >
+      <nz-option
+        *ngFor="let size of listPageSizeBill"
+        [nzValue]="size"
+        [nzLabel]="size.label"
+      ></nz-option>
+    </nz-select>
+  </div>
+  <nz-pagination
+    [(nzPageIndex)]="currentPageBill"
+    [nzPageSize]="pageSizeBill.value"
+    [nzTotal]="totalElementsBill"
+    [nzResponsive]="true"
+    (nzPageIndexChange)="changePageBill()"
+    nzShowQuickJumper
+    [nzShowTotal]="rangeTemplate"
+  ></nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{ range[0] }}-{{ range[1] }} của {{ totalElementsBill }} sản phẩm
+  </ng-template>
+</div>

@@ -1,0 +1,77 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Danh sách lần nhập hàng
+  </h4>
+</div>
+<div class="row px-4" id="main-container">
+  <table class="table">
+    <thead id="table-head">
+      <tr>
+        <th class="col-3 py-2">Tên sản phẩm</th>
+        <th class="col-2 py-2 text-right">Số lượng</th>
+        <th class="col-2 py-2 text-right">Giá nhập vào (VNĐ)</th>
+        <th class="col-2 py-2 text-center">Ngày nhập vào</th>
+        <th class="col-3 py-2 text-left">Nhà cung cấp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of customResultImportBill">
+        <td class="fontWeigth item-center">
+          {{ item.name }}
+        </td>
+        <td class="fontWeigth text-right text-truncate description item-center">
+          {{ item?.quantity }}
+        </td>
+        <td class="fontWeigth text-right item-center">
+          {{ item?.price | currency: "VND" }}
+        </td>
+        <td class="fontWeigth text-center item-center">
+          {{ item?.createdDate | date: "dd-MM-yyyy" }}
+        </td>
+        <td class="fontWeigth text-left item-center">
+          {{ item?.supplierName }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row d-flex justify-content-between mx-1 mb-1">
+  <div class="col-3">
+    <span class="text-center my-1 mx-1">Hiển thị</span>
+    <nz-select
+      class="mx-3 col-4"
+      (ngModelChange)="changePageSize($event)"
+      [(ngModel)]="pageSize"
+    >
+      <nz-option
+        *ngFor="let size of listPageSize"
+        [nzValue]="size"
+        [nzLabel]="size.label"
+      ></nz-option>
+    </nz-select>
+  </div>
+  <nz-pagination
+    [(nzPageIndex)]="currentPage"
+    [nzPageSize]="pageSize.value"
+    [nzTotal]="totalElements"
+    [nzResponsive]="true"
+    (nzPageIndexChange)="changePage()"
+    nzShowQuickJumper
+    [nzShowTotal]="rangeTemplate"
+  ></nz-pagination>
+  <ng-template #rangeTemplate let-range="range" let-total>
+    {{ range[0] }}-{{ range[1] }} của {{ totalElements }} item
+  </ng-template>
+</div>
+<div class="modal-footer d-flex justify-content-between">
+  <button
+    type="button"
+    id="add-employee-form"
+    class="btn btn-secondary btn-sm"
+    data-dismiss="modal"
+    tabindex="7"
+    (click)="redirectList()"
+  >
+    Quay trở về
+  </button>
+</div>

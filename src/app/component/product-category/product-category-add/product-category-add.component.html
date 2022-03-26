@@ -1,0 +1,112 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý nhà cung cấp
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="addProductCategoryModalLabel">
+        Thêm mới nhà cung cấp
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form
+        [formGroup]="fromAddProductCategory"
+        appAutofocus
+        (ngSubmit)="addProductCategory(fromAddProductCategory)"
+      >
+        <div class="form-group">
+          <p for="name" class="col-10 px-0 my-0">
+            Tên loại sản phẩm<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            formControlName="name"
+            placeholder="Nhập tên loại sản phẩm"
+            tabindex="1"
+            appAutofocus
+            [ngClass]="{
+              'form-focus':
+                (productCategoryError?.name && submited) ||
+                (f.name.errors?.required && f.name.dirty) ||
+                (f.name.errors?.minlength && f.name.touched) ||
+                (f.name.errors?.maxlength && f.name.dirty)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          />
+          <!--Validator back-end-->
+          <div *ngIf="productCategoryError?.name && submited">
+            <span class="text text-danger">{{
+              productCategoryError?.name
+            }}</span>
+          </div>
+          <!--End validator back-end-->
+          <!--Validator front-end-->
+          <div *ngIf="f.name.errors?.required && f.name.dirty">
+            <span class="text text-danger">{{ f.name.errors?.required }} </span>
+          </div>
+          <div *ngIf="f.name.errors?.minlength && f.name.touched">
+            <span class="text text-danger">
+              {{ f.name.errors?.minlength }}
+            </span>
+          </div>
+          <div *ngIf="f.name.errors?.maxlength && f.name.dirty">
+            <span class="text text-danger">
+              {{ f.name.errors?.maxlength }}
+            </span>
+          </div>
+          <!--End validator front-end-->
+        </div>
+        <div class="form-group">
+          <p for="description" class="col-10 px-0 my-0">
+            Thông tin loại sản phẩm<span class="text text-danger">*</span>
+          </p>
+          <input
+            type="text"
+            class="form-control search"
+            formControlName="description"
+            placeholder="Nhập thông tin loại sản phẩm"
+            tabindex="2"
+            [ngClass]="{
+              'form-focus':
+                (productCategoryError?.description && submited) ||
+                (f.description.errors?.required && f.description.dirty)
+            }"
+            [ngClass]="{ 'form-control:focus': false }"
+          />
+          <!--Validator backend-->
+          <div *ngIf="productCategoryError?.description && submited">
+            <span class="text text-danger">{{
+              productCategoryError?.description
+            }}</span>
+          </div>
+          <!--End Validator backend-->
+          <!--Validator front-end-->
+          <div *ngIf="f.description.errors?.required && f.description.dirty">
+            <span class="text text-danger">
+              {{ f.description.errors?.required }}
+            </span>
+          </div>
+          <!--End validator front-end-->
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            type="button"
+            id="add-employee-form"
+            class="btn btn-secondary btn-sm"
+            data-dismiss="modal"
+            tabindex="4"
+            (click)="redirectList()"
+          >
+            Quay trở về
+          </button>
+          <button type="submit" class="btn btn-primary btn-sm" tabindex="3">
+            Thêm mới
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,236 @@
+<div class="row px-4">
+  <h4 class="px-0 py-2 border-bottom border-secondary col-12">
+    Quản lý phiếu nhập
+  </h4>
+</div>
+<div [style]="{ marginLeft: '20px' }" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="addProductCategoryModalLabel">
+        Chỉnh sửa phiếu nhập
+      </h5>
+    </div>
+    <div class="row mt-5 px-2">
+      <div class="col-8">
+        <div class="mt-4">
+          <table class="table table-success">
+            <thead id="table-head">
+              <tr>
+                <th class="col-4 py-2">Tên sản phẩm</th>
+                <th class="col-2 py-2 text-right">Số lượng</th>
+                <th class="col-3 py-2 text-right">Giá nhập</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of importBilldetails">
+                <input type="hidden" value="{{ item.id }}" />
+                <td class="fontWeigth col-1-ten">
+                  <span
+                    ><input
+                      type="text"
+                      value="{{ item.product.name }}"
+                      class="form-control"
+                      readonly
+                    />
+                  </span>
+                </td>
+                <td class="fontWeigth">
+                  <input
+                    type="number"
+                    class="form-control text-right"
+                    [ngModel]="item.quantity"
+                    appAutofocus
+                    (ngModelChange)="
+                      handelChangeQuantity(item.id, (item.quantity = $event))
+                    "
+                  />
+                  <span
+                    [style]="{ display: 'none' }"
+                    id="quantity{{ item.id }}"
+                    class="text text-danger"
+                  >
+                    * số lượng phải từ 1 đến 1000000000
+                  </span>
+                </td>
+                <td class="fontWeigth text-right">
+                  <input
+                    type="number"
+                    class="form-control text-right"
+                    [ngModel]="item.price"
+                    (ngModelChange)="
+                      handelChangePrice(item.id, (item.price = $event))
+                    "
+                  />
+                  <span
+                    [style]="{ display: 'none' }"
+                    id="price{{ item.id }}"
+                    class="text text-danger"
+                  >
+                    * giá nhập vào phải từ 1 đến 1000000000
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-4">
+        <form
+          action=""
+          [formGroup]="formImportBill"
+          (ngSubmit)="addImportBill(formImportBill)"
+        >
+          <div class="form-group">
+            <p class="my-0">
+              Nhà cung cấp <span class="text text-danger">*</span>
+            </p>
+            <nz-select
+              nzShowSearch
+              formControlName="supplierId"
+              [ngClass]="{
+                'form-focus':
+                  importBillError?.supplierId &&
+                  submited &&
+                  fIB.supplierId.value === 0
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            >
+              <nz-option
+                *ngFor="let supplier of suppliers"
+                [nzLabel]="supplier.supplierName"
+                [nzValue]="supplier.id"
+              ></nz-option>
+            </nz-select>
+            <!--Validator backend-->
+            <div
+              *ngIf="
+                importBillError?.supplierId &&
+                submited &&
+                fIB.supplierId.value === 0
+              "
+            >
+              <span class="text text-danger">{{
+                importBillError?.supplierId
+              }}</span>
+            </div>
+            <!--End validator backend-->
+            <!--Validator frontend-->
+            <div
+              *ngIf="fIB.supplierId.errors?.required && fIB.supplierId.dirty"
+            >
+              <span class="text text-danger">
+                * nhà cung cấp không được để trống
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="form-group">
+            <p class="my-0">
+              Người nhập hàng <span class="text text-danger">*</span>
+            </p>
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Chọn người nhập hàng"
+              formControlName="userId"
+              [ngClass]="{
+                'form-focus':
+                  importBillError?.userId && submited && fIB.userId.value === 0
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            >
+              <nz-option
+                *ngFor="let user of users"
+                [nzLabel]="user.fullName"
+                [nzValue]="user.id"
+              ></nz-option>
+            </nz-select>
+            <!--Validator backend-->
+            <div
+              *ngIf="
+                importBillError?.userId && submited && fIB.userId.value === 0
+              "
+            >
+              <span class="text text-danger">{{
+                importBillError?.userId
+              }}</span>
+            </div>
+            <!--End validator backend-->
+            <!--Validator frontend-->
+            <div *ngIf="fIB.userId.errors?.required && fIB.userId.dirty">
+              <span class="text text-danger">
+                * người nhập hàng không được để trống
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="form-group">
+            <p class="my-0">
+              Ngày nhập vào <span class="text text-danger">*</span>
+            </p>
+            <input
+              type="date"
+              class="form-control search"
+              formControlName="createdDate"
+              [ngClass]="{
+                'form-focus':
+                  (fIB.createdDate?.errors?.dateVaidator &&
+                    fIB.createdDate.dirty) ||
+                  (fIB.createdDate.errors?.dateMin && fIB.createdDate.dirty) ||
+                  (fIB.createdDate.errors?.dateFormat && fIB.createdDate.dirty)
+              }"
+              [ngClass]="{ 'form-control:focus': false }"
+            />
+            <!--Validator frontend-->
+            <div
+              *ngIf="
+                fIB.createdDate.errors?.dateVaidator && fIB.createdDate.dirty
+              "
+            >
+              <span class="text text-danger">
+                * Ngày nhập vào không được lớn hơn ngày hiện tại
+              </span>
+            </div>
+            <div
+              *ngIf="fIB.createdDate.errors?.dateMin && fIB.createdDate.dirty"
+            >
+              <span class="text text-danger">
+                * Ngày nhập vào không được nhỏ hơn năm 1980
+              </span>
+            </div>
+            <div
+              *ngIf="
+                fIB.createdDate.errors?.dateFormat && fIB.createdDate.dirty
+              "
+            >
+              <span class="text text-danger">
+                * Ngày nhập vào không đúng định dạng
+              </span>
+            </div>
+            <!--End validator front-end-->
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button
+              type="button"
+              id="add-employee-form"
+              class="btn btn-secondary btn-sm"
+              data-dismiss="modal"
+              tabindex="7"
+              (click)="redirectList()"
+            >
+              Quay trở về
+            </button>
+            <button
+              type="submit"
+              id="submitForm"
+              class="btn btn-primary btn-sm"
+              tabindex="6"
+            >
+              Chỉnh sửa
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

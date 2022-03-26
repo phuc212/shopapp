@@ -1,0 +1,15 @@
+.address {
+  max-width: 50px;
+}
+
+table td {
+  padding: 0.55rem;
+}
+
+.btn {
+  padding: 0.1rem 0.4rem;
+}
+
+.btn-action-edit {
+  padding: 4px 8px;
+}
